@@ -251,7 +251,7 @@ if run_button:
             "📈 Annualised Return",
             "📉 Annualised Volatility", 
             "⭐ Sharpe Ratio",
-            "─" * 20,
+            "── Individual Holding Optimized Weights ──",
         ] + [f"⚖️ {t}" for t in tickers],
         
         "🟢 Max Sharpe": [
