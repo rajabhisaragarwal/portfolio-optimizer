@@ -243,7 +243,7 @@ if run_button:
 
     # ── Summary Tables ────────────────────────────────────────────────────────
 
-   st.subheader("📋 Optimal Portfolio Summary")
+    st.subheader("📋 Optimal Portfolio Summary")
 
 # ── Unified Summary Table ─────────────────────────────────────────────────────
     summary_data = {
