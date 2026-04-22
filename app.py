@@ -42,15 +42,21 @@ tickers_input = st.text_input(
 col1, col2 = st.columns(2)
 
 with col1:
-    risk_free_rate = st.number_input(
-        "Annual risk-free rate (%)",
-        min_value=0.0,
-        max_value=20.0,
-        value=None,
-        placeholder="e.g. 4.25",
-        step=0.25,
-        help="Use 3-month T-bill rate for US portfolios (~5.25%) or RBI repo rate for Indian portfolios (~6.25%)"
-    ) / 100
+    risk_free_input = st.number_input(
+    "Annual risk-free rate (%)",
+    min_value=0.0,
+    max_value=20.0,
+    value=None,
+    placeholder="e.g. 4.25",
+    step=0.25,
+    help="Use 3-month T-bill rate for US portfolios (~5.25%) or RBI repo rate for Indian portfolios (~6.25%)"
+)
+
+risk_free_rate = risk_free_input / 100 if risk_free_input is not None else None
+
+if risk_free_rate is None:
+    st.error("❌ Please enter an annual risk-free rate.")
+    st.stop()
 
 with col2:
     num_portfolios = st.select_slider(
