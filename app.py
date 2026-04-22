@@ -21,7 +21,7 @@ st.title("📊 MPT Portfolio Optimizer")
 st.markdown("Built on **Modern Portfolio Theory (Markowitz, 1952)** — enter any set of US or Indian stocks to generate the efficient frontier and identify optimal portfolio allocations.")
 
 st.warning("""
-**Important:** This tool supports **either** US stocks/ETFs **or** Indian stocks (NSE/BSE) in a single run.  
+**Important:** This tool supports **either** US stocks/ETFs **or** Indian stocks/ETFs (NSE/BSE) in a single run.  
 Do **not** mix both — currency differences (USD vs INR) will produce misleading results.  
 Indian stocks: append **.NS** (NSE) or **.BO** (BSE) — e.g. `RELIANCE.NS`, `HDFCBANK.NS`
 """)
