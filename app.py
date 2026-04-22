@@ -26,37 +26,51 @@ Do **not** mix both — currency differences (USD vs INR) will produce misleadin
 Indian stocks: append **.NS** (NSE) or **.BO** (BSE) — e.g. `RELIANCE.NS`, `HDFCBANK.NS`
 """)
 
-# ── Sidebar Inputs ────────────────────────────────────────────────────────────
+st.markdown("---")
+st.subheader("⚙️ Configuration")
 
-st.sidebar.header("⚙️ Configuration")
+# ── Row 1: Tickers ────────────────────────────────────────────────────────────
 
-tickers_input = st.sidebar.text_input(
+tickers_input = st.text_input(
     "Enter tickers (comma separated)",
-    value="AAPL, MSFT, GLD, TLT, VNQ"
+    value="AAPL, MSFT, GLD, TLT, VNQ",
+    help="US stocks/ETFs: AAPL, MSFT, GLD | Indian stocks (NSE): RELIANCE.NS, HDFCBANK.NS"
 )
 
-risk_free_rate = st.sidebar.number_input(
-    "Annual risk-free rate (%)",
-    min_value=0.0,
-    max_value=20.0,
-    value=5.25,
-    step=0.25,
-    help="Use 3-month T-bill rate for US portfolios (~5.25%) or RBI repo rate for Indian portfolios (~6.25%)"
-) / 100
+# ── Row 2: Risk-free rate and Simulation count ────────────────────────────────
 
-col1, col2 = st.sidebar.columns(2)
+col1, col2 = st.columns(2)
+
 with col1:
-    start_date = st.date_input("Start date", value=date(2022, 1, 1))
+    risk_free_rate = st.number_input(
+        "Annual risk-free rate (%)",
+        min_value=0.0,
+        max_value=20.0,
+        value=5.25,
+        step=0.25,
+        help="Use 3-month T-bill rate for US portfolios (~5.25%) or RBI repo rate for Indian portfolios (~6.25%)"
+    ) / 100
+
 with col2:
+    num_portfolios = st.select_slider(
+        "Number of simulated portfolios",
+        options=[5000, 10000, 15000, 20000, 25000, 30000],
+        value=10000
+    )
+
+# ── Row 3: Date range ─────────────────────────────────────────────────────────
+
+col3, col4 = st.columns(2)
+
+with col3:
+    start_date = st.date_input("Start date", value=date(2022, 1, 1))
+
+with col4:
     end_date = st.date_input("End date", value=date.today())
 
-num_portfolios = st.sidebar.select_slider(
-    "Number of simulated portfolios",
-    options=[1000, 5000, 10000, 20000],
-    value=10000
-)
+st.markdown("---")
 
-run_button = st.sidebar.button("🚀 Run Optimization", use_container_width=True)
+run_button = st.button("🚀 Run Optimization", use_container_width=True)
 
 # ── Main Logic ────────────────────────────────────────────────────────────────
 
@@ -85,7 +99,6 @@ if run_button:
                 st.error("❌ No data returned. Check your tickers and date range.")
                 st.stop()
 
-            # Drop tickers with all NaN
             returns = returns.dropna(axis=1, how="all")
             tickers = list(returns.columns)
 
@@ -112,15 +125,15 @@ if run_button:
         port_weights    = np.zeros((num_portfolios, n_assets))
 
         for i in range(num_portfolios):
-            weights              = np.random.random(n_assets)
-            weights              = weights / weights.sum()
-            p_return             = np.dot(weights, mean_returns)
-            p_volatility         = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
-            p_sharpe             = (p_return - risk_free_rate) / p_volatility
-            port_returns[i]      = p_return
-            port_volatility[i]   = p_volatility
-            port_sharpe[i]       = p_sharpe
-            port_weights[i]      = weights
+            weights            = np.random.random(n_assets)
+            weights            = weights / weights.sum()
+            p_return           = np.dot(weights, mean_returns)
+            p_volatility       = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
+            p_sharpe           = (p_return - risk_free_rate) / p_volatility
+            port_returns[i]    = p_return
+            port_volatility[i] = p_volatility
+            port_sharpe[i]     = p_sharpe
+            port_weights[i]    = weights
 
     # ── Identify Optimal Portfolios ───────────────────────────────────────────
 
@@ -139,12 +152,12 @@ if run_button:
     min_vol_weights    = port_weights[min_vol_idx]
 
     # Max Return — calculated directly
-    best_asset_idx        = np.argmax(mean_returns.values)
-    max_return_weights    = np.zeros(n_assets)
+    best_asset_idx                     = np.argmax(mean_returns.values)
+    max_return_weights                 = np.zeros(n_assets)
     max_return_weights[best_asset_idx] = 1.0
-    max_return_return     = float(mean_returns.iloc[best_asset_idx])
-    max_return_volatility = float(np.sqrt(cov_matrix.iloc[best_asset_idx, best_asset_idx]))
-    max_return_sharpe     = float((max_return_return - risk_free_rate) / max_return_volatility)
+    max_return_return                  = float(mean_returns.iloc[best_asset_idx])
+    max_return_volatility              = float(np.sqrt(cov_matrix.iloc[best_asset_idx, best_asset_idx]))
+    max_return_sharpe                  = float((max_return_return - risk_free_rate) / max_return_volatility)
 
     # ── Plotly Chart ──────────────────────────────────────────────────────────
 
@@ -221,17 +234,17 @@ if run_button:
     st.subheader("📋 Optimal Portfolio Summary")
 
     metrics_df = pd.DataFrame({
-        "Metric": ["Annualised Return", "Annualised Volatility", "Sharpe Ratio"],
+        "Metric":         ["Annualised Return", "Annualised Volatility", "Sharpe Ratio"],
         "Max Sharpe":     [f"{max_sharpe_return:.2%}", f"{max_sharpe_volatility:.2%}", f"{max_sharpe_ratio:.4f}"],
-        "Min Volatility": [f"{min_vol_return:.2%}",   f"{min_vol_volatility:.2%}",    f"{min_vol_sharpe:.4f}"],
+        "Min Volatility": [f"{min_vol_return:.2%}", f"{min_vol_volatility:.2%}", f"{min_vol_sharpe:.4f}"],
         "Max Return":     [f"{max_return_return:.2%}", f"{max_return_volatility:.2%}", f"{max_return_sharpe:.4f}"]
     })
 
     weights_df = pd.DataFrame({
-        "Ticker":              tickers,
-        "Max Sharpe Weight":   [f"{w:.2%}" for w in max_sharpe_weights],
+        "Ticker":                tickers,
+        "Max Sharpe Weight":     [f"{w:.2%}" for w in max_sharpe_weights],
         "Min Volatility Weight": [f"{w:.2%}" for w in min_vol_weights],
-        "Max Return Weight":   [f"{w:.2%}" for w in max_return_weights]
+        "Max Return Weight":     [f"{w:.2%}" for w in max_return_weights]
     })
 
     st.dataframe(metrics_df, use_container_width=True, hide_index=True)
