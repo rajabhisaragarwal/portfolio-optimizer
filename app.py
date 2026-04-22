@@ -224,7 +224,7 @@ if run_button:
                    fixedrange=True, range=[x_min - x_padding, x_max + x_padding]),
         yaxis=dict(title="Annualised Return", tickformat=".1%",
                    fixedrange=True, range=[y_min - y_padding, y_max + y_padding]),
-        legend=dict(x=0.99, y=0.01, xanchor = "right", yanchor = "bottom", bgcolor="rgba(255,255,255,0.1)", itemsizing = "constant", itemwidth = 40),
+        legend=dict(x=0.99, y=0.01, xanchor = "right", yanchor = "bottom", bgcolor="rgba(255,255,255,0.1)", itemsizing = "constant", itemwidth = 70),
         hovermode="closest", height=600, template="plotly_dark"
     )
 
