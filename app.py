@@ -201,7 +201,7 @@ if run_button:
     fig.add_trace(go.Scatter(
         x=[min_vol_volatility], y=[min_vol_return],
         mode="markers",
-        marker=dict(size=18, color="#3498DB", symbol="circle", opacity = 0.9, line=dict(color="white", width=1.5)),
+        marker=dict(size=17, color="#3498DB", symbol="square", opacity = 0.9, line=dict(color="white", width=1.5)),
         hovertext=[f"<b>Min Volatility</b><br>Return: {min_vol_return:.2%}<br>"
                    f"Volatility: {min_vol_volatility:.2%}<br>Sharpe: {min_vol_sharpe:.4f}<br><br>"
                    f"Weights:<br>" + "<br>".join([f"{t}: {w:.2%}" for t, w in zip(tickers, min_vol_weights)])],
@@ -211,7 +211,7 @@ if run_button:
     fig.add_trace(go.Scatter(
         x=[max_return_volatility], y=[max_return_return],
         mode="markers",
-        marker=dict(size=12, color="#E74C3C", symbol="circle", opacity = 0.9, line=dict(color="white", width=1.5)),
+        marker=dict(size=12, color="#E74C3C", symbol="star", opacity = 0.9, line=dict(color="white", width=1.5)),
         hovertext=[f"<b>Max Return</b><br>Return: {max_return_return:.2%}<br>"
                    f"Volatility: {max_return_volatility:.2%}<br>Sharpe: {max_return_sharpe:.4f}<br><br>"
                    f"Weights:<br>" + "<br>".join([f"{t}: {w:.2%}" for t, w in zip(tickers, max_return_weights)])],
