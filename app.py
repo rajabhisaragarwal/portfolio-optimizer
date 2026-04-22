@@ -243,24 +243,52 @@ if run_button:
 
     # ── Summary Tables ────────────────────────────────────────────────────────
 
-    st.subheader("📋 Optimal Portfolio Summary")
+   st.subheader("📋 Optimal Portfolio Summary")
 
-    metrics_df = pd.DataFrame({
-        "Metric":         ["Annualised Return", "Annualised Volatility", "Sharpe Ratio"],
-        "Max Sharpe":     [f"{max_sharpe_return:.2%}", f"{max_sharpe_volatility:.2%}", f"{max_sharpe_ratio:.4f}"],
-        "Min Volatility": [f"{min_vol_return:.2%}", f"{min_vol_volatility:.2%}", f"{min_vol_sharpe:.4f}"],
-        "Max Return":     [f"{max_return_return:.2%}", f"{max_return_volatility:.2%}", f"{max_return_sharpe:.4f}"]
-    })
-
-    weights_df = pd.DataFrame({
-        "Ticker":                tickers,
-        "Max Sharpe Weight":     [f"{w:.2%}" for w in max_sharpe_weights],
-        "Min Volatility Weight": [f"{w:.2%}" for w in min_vol_weights],
-        "Max Return Weight":     [f"{w:.2%}" for w in max_return_weights]
-    })
-
-    st.dataframe(metrics_df, use_container_width=True, hide_index=True)
-    st.dataframe(weights_df, use_container_width=True, hide_index=True)
+# ── Unified Summary Table ─────────────────────────────────────────────────────
+    summary_data = {
+        "": [
+            "📈 Annualised Return",
+            "📉 Annualised Volatility", 
+            "⭐ Sharpe Ratio",
+            "─" * 20,
+        ] + [f"⚖️ {t}" for t in tickers],
+        
+        "🟢 Max Sharpe": [
+            f"{max_sharpe_return:.2%}",
+            f"{max_sharpe_volatility:.2%}",
+            f"{max_sharpe_ratio:.4f}",
+            "",
+        ] + [f"{w:.2%}" for w in max_sharpe_weights],
+    
+        "🔵 Min Volatility": [
+            f"{min_vol_return:.2%}",
+            f"{min_vol_volatility:.2%}",
+            f"{min_vol_sharpe:.4f}",
+            "",
+        ] + [f"{w:.2%}" for w in min_vol_weights],
+    
+        "🔴 Max Return": [
+            f"{max_return_return:.2%}",
+            f"{max_return_volatility:.2%}",
+            f"{max_return_sharpe:.4f}",
+            "",
+        ] + [f"{w:.2%}" for w in max_return_weights],
+    }
+    
+    summary_df = pd.DataFrame(summary_data)
+    
+    st.dataframe(
+        summary_df,
+        use_container_width=True,
+        hide_index=True,
+        column_config={
+            "": st.column_config.TextColumn(width="medium"),
+            "🟢 Max Sharpe": st.column_config.TextColumn(width="medium"),
+            "🔵 Min Volatility": st.column_config.TextColumn(width="medium"),
+            "🔴 Max Return": st.column_config.TextColumn(width="medium"),
+        }
+    )
 
     # ── Footer Disclaimer ─────────────────────────────────────────────────────
 
