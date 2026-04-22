@@ -46,8 +46,7 @@ with col1:
     "Annual risk-free rate (%)",
     min_value=0.0,
     max_value=20.0,
-    value=None,
-    placeholder="e.g. 4.25",
+    value=4.25,
     step=0.25,
     help="Use 3-month T-bill rate for US portfolios (~5.25%) or RBI repo rate for Indian portfolios (~6.25%)"
 )
