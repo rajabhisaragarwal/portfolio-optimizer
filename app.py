@@ -142,6 +142,8 @@ if run_button:
             port_sharpe[i]     = p_sharpe
             port_weights[i]    = weights
 
+    st.success(f"✅ Simulation complete — {num_portfolios:,} portfolios generated successfully.")
+    
     # ── Identify Optimal Portfolios ───────────────────────────────────────────
 
     # Max Sharpe
