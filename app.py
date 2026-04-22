@@ -33,8 +33,6 @@ st.subheader("⚙️ Configuration")
 
 tickers_input = st.text_input(
     "Enter tickers (comma separated)",
-   tickers_input = st.text_input(
-    "Enter tickers (comma separated)",
     placeholder="e.g. AAPL, MSFT, AMZN  or  TCS.NS, RELIANCE.NS, INFY.NS",
     help="US stocks/ETFs: AAPL, MSFT, GLD | Indian stocks (NSE): RELIANCE.NS, HDFCBANK.NS"
 )
