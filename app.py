@@ -54,10 +54,6 @@ with col1:
 
 risk_free_rate = risk_free_input / 100 if risk_free_input is not None else None
 
-if risk_free_rate is None:
-    st.error("❌ Please enter an annual risk-free rate.")
-    st.stop()
-
 with col2:
     num_portfolios = st.select_slider(
         "Number of simulated portfolios",
@@ -90,6 +86,10 @@ if run_button:
         st.error("❌ Please enter at least 2 tickers.")
         st.stop()
 
+    if risk_free_rate is None:
+        st.error("❌ Please enter an annual risk-free rate.")
+        st.stop()
+    
     if end_date <= start_date:
         st.error("❌ End date must be after start date.")
         st.stop()
