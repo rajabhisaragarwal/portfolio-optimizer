@@ -168,13 +168,13 @@ if run_button:
 
     # ── Plotly Chart ──────────────────────────────────────────────────────────
 
-    y_min     = min(float(min_vol_return), float(max_sharpe_return), float(max_return_return))
-    y_max     = max(float(min_vol_return), float(max_sharpe_return), float(max_return_return))
-    y_padding = (y_max - y_min) * 0.2
-
-    x_min     = min(float(min_vol_volatility), float(max_sharpe_volatility), float(max_return_volatility))
-    x_max     = max(float(min_vol_volatility), float(max_sharpe_volatility), float(max_return_volatility))
-    x_padding = (x_max - x_min) * 0.2
+    y_min     = min(float(port_returns.min()), float(min_vol_return), float(max_sharpe_return), float(max_return_return))
+    y_max     = max(float(port_returns.max()), float(min_vol_return), float(max_sharpe_return), float(max_return_return))
+    y_padding = (y_max - y_min) * 0.1
+    
+    x_min     = min(float(port_volatility.min()), float(min_vol_volatility), float(max_sharpe_volatility), float(max_return_volatility))
+    x_max     = max(float(port_volatility.max()), float(min_vol_volatility), float(max_sharpe_volatility), float(max_return_volatility))
+    x_padding = (x_max - x_min) * 0.1
 
     fig = go.Figure()
 
